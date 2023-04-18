@@ -1,0 +1,127 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+.box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Adjust to desired height */
+  width:100%;
+
+  -webkit-transition: all 2s ease;  
+  -moz-transition: all 2s ease;  
+  -o-transition: all 2s ease;  
+  -ms-transition: all 2s ease;  
+  transition: all 2s ease;
+}
+
+.intro{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.transform-active2 {
+  background-color: #ffffff;
+  width: 100%;
+  height:100vh;
+  margin: auto; /* Add margin auto to center the div */
+}
+  
+
+.test{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.project-wrapper {
+  overflow: hidden;
+  transition: height 5.5s ease;
+  min-height: 60vh;
+}
+.form-control{
+  margin:1vh;
+}
+.formSub{
+  width:70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+footer {
+  position:absolute;
+  bottom:0;
+  width:100%;
+  color:white;
+  text-align:center;
+  font-weight:200;
+  background:rgb(91, 93, 94);
+}
+h6{
+  color:black;
+  text-align: center;
+}
+.important{
+  list-style-type: none;
+  border-radius:10px;
+  padding:1.5vh;
+  color:rgb(0, 0, 0);
+  background-color:rgb(230, 229, 229);
+  border: 1px black solid;
+  cursor: pointer;
+  overflow: hidden; /* Add overflow: hidden to clip the transition effect */
+}
+
+.invalid{
+  display:flex;
+  align-items:normal;
+  padding:0;
+  color:rgb(255, 0, 0);
+}
+
+.hidden {
+  display: none;
+}
+
+.butto{
+  border-radius:5px;
+}
