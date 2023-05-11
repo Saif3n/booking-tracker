@@ -15,8 +15,8 @@ function Input() {
       <div className={`box transform ${expanded ? 'transform-active2 ' : ''}`}>
         {!expanded &&
           <div className="intro">
-            <h1>Bachcare Cancellation Tracker</h1>
-            <h4>A tracker that notifies you when the desired dates of a Bachcare property becomes available.</h4>
+            <h1>Air New Zealand Seat AddTracker</h1>
+            <h4>A tracker that notifies you when your desired seats become available.</h4>
             <button type="button" className="butto" onClick={handleClick}>Get Started</button>
           </div>
         }

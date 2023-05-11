@@ -6,34 +6,20 @@ import moment from "moment"
 
 export const Post = () => {
   const formInitialDetails = {
-    link: '',
-    startdate: '',
-    enddate: '',
+    booking_reference: '',
+    family_name: '',
+    departure_date: '',
     emailaddress: ''
   }
   const [formDetails, setFormDetails] = useState(formInitialDetails);
-  const [link, setLink] = useState(null)
+  const [booking_reference, setbooking_reference] = useState(null)
   const [start, setStart] = useState(null)
   const [checkemailaddress, setCheckemailaddress] = useState(null)
   const [msg, setMsg] = useState(null)
 
   const [isListVisible, setListVisible] = useState(false); // State to track list visibility
 
-  function isTwoDaysAhead(dateString) {
-    let inputDate = moment(dateString, "DD/MM/YYYY");
-    let currentDate = moment();
-    let fourDaysAhead = moment(currentDate).add(4, 'days');
-    console.log('TWO DAYS + ' + inputDate.isSame(fourDaysAhead, 'day'))
-    console.log(fourDaysAhead)
-    return inputDate.isAfter(fourDaysAhead);
-  }
 
-  function validDate(date1, date2) {
-    let momentDate1 = moment(date1, "DD/MM/YYYY"); // Parse date1 using Moment.js
-    let momentDate2 = moment(date2, "DD/MM/YYYY"); // Parse date2 using Moment.js
-    console.log('VALID DAYS + ' + momentDate2.isAfter(momentDate1));
-    return momentDate2.isAfter(momentDate1); // Compare date2 with date1 using Moment.js
-  }
 
 
 const toggleList = () => {
@@ -50,15 +36,16 @@ const onFormUpdate = (category, value) => {
 
 const handleSubmit = async (e) => {
   e.preventDefault();
-  setLink(null)
+  setbooking_reference(null)
   setCheckemailaddress(null)
   setStart(null)
 
   let fail = false;
   const emailaddressRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const bookingrefRegex = /^[A-Za-z0-9]{5}H$/;
 
-  if (!formDetails.link.startsWith('https://www.bachcare.co.nz/holiday-homes-accommodation/')) {
-    setLink('Invalid Bachcare property link.')
+  if (!bookingrefRegex.test(formDetails.booking_reference)) {
+    setbooking_reference('Invalid booking reference.')
     fail = true;
   }
 
@@ -66,10 +53,7 @@ const handleSubmit = async (e) => {
     setCheckemailaddress('Invalid email address.')
     fail = true;
   }
-  if (!isTwoDaysAhead(formDetails.startdate) || !validDate(formDetails.startdate, formDetails.enddate)) {
-    setStart("Invalid dates.")
-    fail = true;
-  }
+
   if (fail){
     return;
   }
@@ -78,16 +62,16 @@ const handleSubmit = async (e) => {
 
   let payload = {
 
-    link: formDetails.link,
-    startdate: formDetails.startdate,
-    enddate: formDetails.enddate,
+    booking_reference: formDetails.booking_reference,
+    family_name: formDetails.family_name,
+    departure_date: formDetails.departure_date,
     emailaddress: formDetails.emailaddress
 
   };
   console.log(payload)
 
   axios
-    .post("https://localhost:7024/AddProperty", payload)
+    .post("https://localhost:7024/AddTracker", payload)
     .then((response) => {
       console.log('Azure post successful.', response.status, response.text);
       console.log(response.text)
@@ -103,24 +87,24 @@ const handleSubmit = async (e) => {
 return (
   <>
     <div className="formSub">
-      <h2>Track a property</h2>
+      <h2>Track a Seat on Air New Zealand</h2>
       <br></br>
 
       <div onClick={toggleList} className="important">
         <h6 >Important things to note</h6>
         <ul className={isListVisible ? "" : "hidden"}>
           <li>
-            Only 3 properties can be tracked per user.
+            You need to ensure that the provided booking reference, family name, and departure date are correct.
           </li>
           <li>
-            You need to verify that your tracked/desired dates are valid (i.e., your dates meet the minimum night requirement of a listing)
+            If your requested seats become available, an email will be sent to you notifying you of the availability.
           </li>
           <li>
-            If your requested dates become available, an email will be sent to you notifying you of the availability
+            All data submitted on this site is encrypted. Your data will only be used to check the availability of the desired seats, 
+            <br></br>
+            and will be deleted once the tracker expires, or upon your request.
           </li>
-          <li>
-            Your start date must be at least 4 days from today's date.
-          </li>
+
         </ul>
       </div>
 
@@ -128,12 +112,14 @@ return (
 
       <form className="formSub" onSubmit={handleSubmit}>
 
-        <input type="text" value={formDetails.link} className="form-control" required placeholder="Bachcare Property Link" id="formGroupExampleInput" onChange={(e) => onFormUpdate('link', e.target.value)} />
-        {link && <div className="invalid">{link}</div>}
+        <input type="text" value={formDetails.booking_reference} className="form-control" required placeholder="Booking Reference" id="formGroupExampleInput" onChange={(e) => onFormUpdate('booking_reference', e.target.value)} />
+        {booking_reference && <div className="invalid">{booking_reference}</div>}
+        <input type="text" value={formDetails.family_name} className="form-control" placeholder="Family name" onChange={(e) => onFormUpdate('family_name', e.target.value)} />
+
         <input type="emailaddress" value={formDetails.emailaddress} className="form-control" placeholder="Email Address" onChange={(e) => onFormUpdate('emailaddress', e.target.value)}></input>
         {checkemailaddress && <div  className="invalid">{checkemailaddress}</div>}
-        <input type="text" value={formDetails.startdate} className="form-control" placeholder="Start Date (DD/MM/YYYY)" onChange={(e) => onFormUpdate('startdate', e.target.value)} />
-        <input type="text" value={formDetails.enddate} className="form-control" required placeholder="End Date (DD/MM/YYYY" onChange={(e) => onFormUpdate('enddate', e.target.value)} />
+
+        <input type="text" value={formDetails.departure_date} className="form-control" required placeholder="Departure date (dd-mm-yyyy)" onChange={(e) => onFormUpdate('departure_date', e.target.value)} />
         {start && <div  className="invalid">{start}</div>}
         <button type="submit" className="btn btn-primary"><span>Submit</span></button>
         {msg && 
